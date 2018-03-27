@@ -12,6 +12,8 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 WORKDIR "$APP_HOME"
 
+RUN chmod +x /docker-entrypoint.sh
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 8080

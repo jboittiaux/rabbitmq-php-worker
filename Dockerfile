@@ -7,6 +7,8 @@ ENV RABBITMQ_PORT ''
 ENV RABBITMQ_USER ''
 ENV RABBITMQ_PASS ''
 
+RUN docker-php-ext-install bcmath
+
 COPY default-app $APP_HOME
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 

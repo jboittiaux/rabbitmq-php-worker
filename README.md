@@ -1,5 +1,7 @@
 
-# rabbitmq-php-worker
+# **rabbitmq-php-worker**
+
+----------
 
 ## Mise en place du worker sur marathon
 
@@ -14,8 +16,13 @@
             "type": "DOCKER",
             "volumes": [
                 {
-                    "containerPath": "/app",
-                    "hostPath": "[repertoire_application]",
+                    "containerPath": "/app/composer.json",
+                    "hostPath": "[repertoire_application]/composer.json",
+                    "mode": "RW"
+                },
+                {
+                    "containerPath": "/app/process.php",
+                    "hostPath": "[repertoire_application]/process.php",
                     "mode": "RW"
                 }
             ],
@@ -35,20 +42,53 @@
         }
     }
 
+----------
+
 ## Variables d'environnement
 
-### RABBITMQ_HOST
+#### **RABBITMQ_HOST** [required]
 
 Adresse du serveur RabbitMQ
 
-### RABBITMQ_PORT
+#### **RABBITMQ_PORT**
 
 Port du serveur RabbitMQ (5672 par défaut)
 
-### RABBITMQ_USER
+#### **RABBITMQ_USER**
 
 Nom d'utilisateur du serveur RabbitMQ (guest par défaut)
 
-### RABBITMQ_PASS
+#### **RABBITMQ_PASS**
 
 Mot de passe du serveur RabbitMQ (guest par défaut)
+
+#### **RABBITMQ_QUEUE** [required]
+
+Queue de traitement du serveur RabbitMQ
+
+----------
+
+## Mise en place de l'applicatif
+
+Par défaut, le conteneur contient une application qui va se contenter d'afficher les messages de la queue de traitement.
+Pour définir le code de traitement du worker, il suffit de surcharger le fichier `/app/process.php`.
+
+    <?php
+
+    use PhpAmqpLib\Message\AMQPMessage;
+
+    function process_message(AMQPMessage $message)
+    {
+        /* CODE ICI */
+    }
+
+Si certaines librairies doivent être intégrée dans le code du worker, il est possible de surcharger le fichier `/app/composer.json`.
+
+**Attention** : à minima, le fichier `/app/composer.json` doit contenir les librairies suivantes
+
+    {
+        "require": {
+            "php-amqplib/php-amqplib": "^2.7",
+            "pimple/pimple": "^3.2"
+        }
+    }

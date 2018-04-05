@@ -1,0 +1,31 @@
+<?php
+
+use Pimple\Container;
+
+$config = new Container();
+
+$config['rabbitmq.host'] = function ($c) {
+    return getenv('RABBITMQ_HOST');
+};
+$config['rabbitmq.port'] = function ($c) {
+    return getenv('RABBITMQ_PORT');
+};
+$config['rabbitmq.user'] = function ($c) {
+    return getenv('RABBITMQ_USER');
+};
+$config['rabbitmq.pass'] = function ($c) {
+    return getenv('RABBITMQ_PASS');
+};
+$config['rabbitmq.queue'] = function ($c) {
+    return getenv('RABBITMQ_QUEUE');
+};
+
+$config['rabbitmq.consumerTag'] = function ($c) {
+    if (file_exists('/etc/hostname')) {
+        return file_get_contents('/etc/hostname');
+    }
+
+    return 'consumer';
+};
+
+return $config;

@@ -18,10 +18,14 @@ if [ -z "$RABBITMQ_PASS" ]; then
     echo >&2 'Error: missing RABBITMQ_PASS environment variable'
     exit 1
 fi
+if [ -z "$RABBITMQ_QUEUE" ]; then
+    echo >&2 'Error: missing RABBITMQ_QUEUE environment variable'
+    exit 1
+fi
 
 # install application dependencies
 if [ -e 'composer.json' ]; then
-    composer install -q
+    composer install
 fi
 
 exec "$@"

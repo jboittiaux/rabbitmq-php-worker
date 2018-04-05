@@ -10,11 +10,12 @@ ENV RABBITMQ_PASS 'guest'
 RUN docker-php-ext-install bcmath
 
 COPY default-app $APP_HOME
+RUN cp /app/config.php.dist /app/config.php
+
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 WORKDIR "$APP_HOME"
-
-RUN chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

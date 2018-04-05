@@ -1,0 +1,3 @@
+default-app/vendor/
+default-app/config.php
+default-app/composer.lock

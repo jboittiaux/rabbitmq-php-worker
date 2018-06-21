@@ -7,8 +7,13 @@ ENV RABBITMQ_PORT 5672
 ENV RABBITMQ_USER 'guest'
 ENV RABBITMQ_PASS 'guest'
 
-RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install imap
+RUN apk upgrade --update && apk add \
+        imap-dev \
+        openssl-dev \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-configure imap \
+    && docker-php-ext-configure imap --with-imap --with-imap-ssl \
+    && docker-php-ext-install imap
 
 COPY default-app $APP_HOME
 RUN cp /app/config.php.dist /app/config.php

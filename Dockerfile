@@ -8,6 +8,7 @@ ENV RABBITMQ_USER 'guest'
 ENV RABBITMQ_PASS 'guest'
 
 RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install imap
 
 COPY default-app $APP_HOME
 RUN cp /app/config.php.dist /app/config.php

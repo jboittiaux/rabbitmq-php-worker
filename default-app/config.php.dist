@@ -28,4 +28,6 @@ $config['rabbitmq.consumerTag'] = function ($c) {
     return 'consumer';
 };
 
+$config['appDir'] = __DIR__;
+
 return $config;
